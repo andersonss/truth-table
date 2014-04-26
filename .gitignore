@@ -1,0 +1,13 @@
+*.class
+*~
+.DS_Store
+
+# Folders #
+.metadata
+.settings
+
+# Package Files #
+*.jar
+*.war
+*.ear
+/bin
