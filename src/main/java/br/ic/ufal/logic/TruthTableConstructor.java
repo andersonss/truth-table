@@ -146,7 +146,7 @@ public class TruthTableConstructor {
 
 		builder.append("\n");
 
-		 System.out.print(builder.toString());
+		System.out.print(builder.toString());
 
 		// resolution.add(builder.toString());
 
@@ -176,7 +176,7 @@ public class TruthTableConstructor {
 
 			builder.append(" ");
 
-			 System.out.println(builder.toString());
+			System.out.println(builder.toString());
 
 			resolution.add(builder.toString());
 
@@ -185,7 +185,7 @@ public class TruthTableConstructor {
 			}
 
 		}
-		
+
 		// endTime = System.currentTimeMillis();
 
 		state = TruthTable.EVALUATION_DEFINITION[truthTable.getEvaluation()];
@@ -225,7 +225,7 @@ public class TruthTableConstructor {
 			System.out.print("Evaluation: ");
 			System.out.println(TruthTable.EVALUATION_DEFINITION[truthTable
 					.getEvaluation()]);
-			
+
 		}
 		// ----------------------------------------------------
 	}
@@ -236,82 +236,70 @@ public class TruthTableConstructor {
 	 * @return
 	 */
 	public String getMainTruthValuesAnswers(String expression) {
-				final int numberOfArguments = expression.length();
+		final int numberOfArguments = expression.length();
 
-				if (resolution.size() > 0)
-					resolution.removeAll(resolution);
+		if (resolution.size() > 0)
+			resolution.removeAll(resolution);
 
-				if (numberOfArguments == 0) {
-					System.out.println("Usage: type the statment");
-				}
+		if (numberOfArguments == 0) {
+			System.out.println("Usage: type the statment");
+		}
 
-				StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 
-				for (int i = 0; i < numberOfArguments; i++) {
-					builder.append(expression.charAt(i));
-				}
+		for (int i = 0; i < numberOfArguments; i++) {
+			builder.append(expression.charAt(i));
+		}
 
-				final String statement = builder.toString();
+		final String statement = builder.toString();
 
-				System.out.print("Input: " + statement + "\n");
+		System.out.print("Input: " + statement + "\n");
 
-				final Scanner scanner = new Scanner(statement);
+		final Scanner scanner = new Scanner(statement);
 
-				try {
-					scanner.tokenize();
-				} catch (final ScannerException se) {
-					System.err.println("Error: " + se.getMessage());
-				}
+		try {
+			scanner.tokenize();
+		} catch (final ScannerException se) {
+			System.err.println("Error: " + se.getMessage());
+		}
 
-				scanner.reformat();
+		scanner.reformat();
 
-				if (scanner.getStatement().length() == 0) {
-					System.err
-							.println("Error: Cannot construct table, no statement entered.");
-				}
+		if (scanner.getStatement().length() == 0) {
+			System.err
+					.println("Error: Cannot construct table, no statement entered.");
+		}
 
+		final Parser parser = new Parser(scanner.getTokenStream());
 
-				final Parser parser = new Parser(scanner.getTokenStream());
+		LinkedList<Token> postfixStream = null;
 
-				LinkedList<Token> postfixStream = null;
+		try {
+			parser.parse();
+			parser.removeUnnecessaryParentheses();
+			postfixStream = parser.getPostfixStream();
+		} catch (final ParserException pe) {
+			System.err.println("Error: " + pe.getMessage());
+		}
 
-				try {
-					parser.parse();
-					parser.removeUnnecessaryParentheses();
-					postfixStream = parser.getPostfixStream();
-				} catch (final ParserException pe) {
-					System.err.println("Error: " + pe.getMessage());
-				}
+		final TruthTable truthTable = new TruthTable(parser.getStatement(),
+				postfixStream, TruthValue.TRUE_FALSE, true);
 
-				final TruthTable truthTable = new TruthTable(parser.getStatement(),
-						postfixStream, TruthValue.TRUE_FALSE, true);
+		final int numberOfLines = truthTable.getNumberOfLines();
 
-				final int numberOfLines = truthTable.getNumberOfLines();
-				
-				//System.out.println(truthTable.listSolution().toString());
+		List<String> answers = new ArrayList<String>();
 
-				StringBuilder answers = new StringBuilder();
-				int offSize = truthTable.computeRow(0).length() - truthTable.getPositionOfMainColumn();
-				
-			    for (int i = numberOfLines - 1; i >= 0; i--) {
-					//System.out.println(truthTable.computeRow(i));
-					answers.append(truthTable.computeRow(i));
-				}
-			    
-			    //System.out.println(truthTable.getNumberOfLines());
-			    
-			    int position = truthTable.getPositionOfMainColumn();
-			    
-			    StringBuilder mainAnswer = new StringBuilder();
-			    
-			    for (int i = 0; i <= truthTable.getNumberOfColumns(); i++) {
-			    	if(i == 0)
-			    		mainAnswer.append(answers.charAt(position)); 
-			    	else
-			    		mainAnswer.append(answers.charAt(position));
-			    	position += truthTable.getPositionOfMainColumn() + offSize;
-				}
-			    
+		for (int i = numberOfLines - 1; i >= 0; i--) {
+			answers.add(truthTable.computeRow(i));
+		}
+
+		StringBuilder mainAnswer = new StringBuilder();
+
+		for (int i = 0; i < truthTable.getNumberOfLines(); i++) {
+			mainAnswer.append(answers.get(i).charAt(
+					truthTable.getPositionOfMainColumn()));
+		}
+
 		return mainAnswer.toString();
 
 	}

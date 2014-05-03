@@ -25,7 +25,7 @@ public class Main1 {
 		expression.add("((P->Q)^P)->Q");
 		// expression.add("(A^B)^(A^C)^(BvA)->A");
 		expression.add("((A -> B) ^ A) -> B");
-		expression.add("A ^ ~A");
+		expression.add("A ^ B");
 
 		// expression.add("((A->B)^(~AvC))v(B)");
 
@@ -33,23 +33,8 @@ public class Main1 {
 		// expression.get(0));
 
 		TruthTableConstructor ttc = TruthTableConstructor.getInstance();
-		ttc.generateWithAnswers(expression.get(1));
-		// System.out.println(ttc.getMainTruthValuesAnswers(expression.get(1)));
-
-		// ttc.getTruthValuesAnswers(expression.get(3));
-		// System.out.println(ttc.generateWithNoAnswers(expression.get(4)));
-		// System.out.print(ttc.getState());
-
-		// String[][] truthValue = ttc.getTruthValuesAnswers(expression.get(3));
-		//
-		// for (int i = 0; i < truthValue.length; i++) {
-		// System.out.println(truthValue[i][0]);
-		// }
-
-		// System.out.println(ttc.generateWithNoAnswers(expression.get(0)));
-
-		// for(String s : ttc.generateWithNoAnswers(expression.get(0)))
-		// System.out.println(s);
+		ttc.generateWithAnswers(expression.get(2));
+		System.out.println(ttc.getMainTruthValuesAnswers(expression.get(2)));
 
 	}
 }
