@@ -53,6 +53,9 @@ public class Parser {
 					token2Type = token2.getType();
 				}
 			}
+
+			ParsingStrategyFactory.forToken(token1).evaluate(token2Type);
+
 			switch (token1Type) {
 			case Token.PROPOSITION:
 				if ((token2Type == Token.PROPOSITION)

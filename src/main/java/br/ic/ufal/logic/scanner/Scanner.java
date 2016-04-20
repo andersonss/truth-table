@@ -50,19 +50,19 @@ public class Scanner {
 
 	private LinkedList<Token> tokenStream;
 	private int i, positionOfFirstBadChar;
-	private final String statement, inclusive_disjunction = symbolTable
-			.get("inclusive_disjunction"), open_parenthesis = symbolTable
-			.get("open_parenthesis"), close_parenthesis = symbolTable
-			.get("close_parenthesis"),
-			negation1 = symbolTable.get("negation1"), negation2 = symbolTable
-					.get("negation2"), conjunction1 = symbolTable
-					.get("conjunction1"), conjunction2 = symbolTable
-					.get("conjunction2"), exclusive_disjunction = symbolTable
-					.get("exclusive_disjunction"), conditional1 = symbolTable
-					.get("conditional1"), conditional2 = symbolTable
-					.get("conditional2"), biconditional1 = symbolTable
-					.get("biconditional1"), biconditional2 = symbolTable
-					.get("biconditional2"), space = symbolTable.get("space"),
+	private final String statement, inclusive_disjunction = symbolTable.get("inclusive_disjunction"),
+			open_parenthesis = symbolTable.get("open_parenthesis"),
+			close_parenthesis = symbolTable.get("close_parenthesis"),
+			negation1 = symbolTable.get("negation1"),
+			negation2 = symbolTable.get("negation2"),
+			conjunction1 = symbolTable.get("conjunction1"),
+			conjunction2 = symbolTable.get("conjunction2"),
+			exclusive_disjunction = symbolTable.get("exclusive_disjunction"),
+			conditional1 = symbolTable.get("conditional1"),
+			conditional2 = symbolTable.get("conditional2"),
+			biconditional1 = symbolTable.get("biconditional1"),
+			biconditional2 = symbolTable.get("biconditional2"),
+			space = symbolTable.get("space"),
 			constant_true = symbolTable.get("constant_true"),
 			constant_false = symbolTable.get("constant_false");
 
