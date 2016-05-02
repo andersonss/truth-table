@@ -5,9 +5,11 @@
 # Folders #
 .metadata
 .settings
+.idea
 
 # Package Files #
 *.jar
 *.war
 *.ear
 /bin
+resolvedor.iml
