@@ -1,4 +1,5 @@
-package br.ic.ufal.logic.parser;
+package br.ic.ufal.logic.parser.strategy;
+import br.ic.ufal.logic.parser.ParserException;
 import br.ic.ufal.logic.token.Token;
 /**
  * Created by Victor C. on 02/05/16.

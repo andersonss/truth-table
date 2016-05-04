@@ -1,4 +1,5 @@
-package br.ic.ufal.logic.parser;
+package br.ic.ufal.logic.parser.strategy;
+import br.ic.ufal.logic.parser.ParserException;
 import br.ic.ufal.logic.token.Token;
 
 /**
@@ -13,10 +14,9 @@ public abstract class ParsingStrategy {
      *
      * @param tokenTwoType Second Token type.
      */
-    abstract void evaluate(int tokenTwoType) throws ParserException;
+    public abstract void evaluate(int tokenTwoType) throws ParserException;
 
-    protected ParsingStrategy setTokenOne(Token token) {
+    protected void setTokenOne(Token token) {
         this.tokenOne = token;
-        return this;
     }
 }

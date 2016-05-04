@@ -9,6 +9,7 @@ import java.util.ListIterator;
 import java.util.Stack;
 
 import br.ic.ufal.logic.token.Token;
+import br.ic.ufal.logic.parser.strategy.*;
 
 /**
  * 
