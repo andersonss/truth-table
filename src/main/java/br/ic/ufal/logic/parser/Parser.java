@@ -105,9 +105,7 @@ public class Parser {
 				} else if (stackTop.isConditional() && token.isConditional()) {
 					stack.push(token);
 				} else {
-					while ((!stack.empty())
-							&& (stackTop.getPrecedence() >= token
-									.getPrecedence())) {
+					while ((!stack.empty()) && (stackTop.getPrecedence() >= token.getPrecedence())) {
 						postfixStream.add(stack.pop());
 						if (!stack.isEmpty()) {
 							stackTop = stack.peek();
