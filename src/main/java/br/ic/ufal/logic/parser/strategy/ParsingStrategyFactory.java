@@ -1,4 +1,4 @@
-package br.ic.ufal.logic.parser;
+package br.ic.ufal.logic.parser.strategy;
 import br.ic.ufal.logic.token.Token;
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
  * Created by victor on 20/04/16.
  */
 
-class ParsingStrategyFactory {
+public class ParsingStrategyFactory {
     /*
     * Factory Pattern applied with the intent of instantiating and returning
     * the correct type of token to make use of its unique functionalities.
@@ -32,6 +32,8 @@ class ParsingStrategyFactory {
      * @param token First Token type.
      */
     public static ParsingStrategy forToken(Token token) {
-        return map.get(token.getType()).setTokenOne(token);
+        ParsingStrategy strategy = map.get(token.getType());
+        strategy.setTokenOne(token);
+        return strategy;
     }
 }

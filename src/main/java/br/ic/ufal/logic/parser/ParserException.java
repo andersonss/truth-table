@@ -18,7 +18,8 @@ public class ParserException extends TruthTableException {
 			"Missing statement at position @X.",
 			"Missing statement inside parentheses at position @X.",
 			"Illegal use of parentheses at position @X.",
-			"Missing opening parenthesis.", "Missing closing parenthesis." };
+			"Missing opening parenthesis.",
+			"Missing closing parenthesis." };
 	private static final long serialVersionUID = 1L;
 
 	private int xValue = -1;

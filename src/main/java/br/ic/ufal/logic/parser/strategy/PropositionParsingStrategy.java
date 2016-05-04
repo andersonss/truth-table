@@ -1,10 +1,11 @@
-package br.ic.ufal.logic.parser;
+package br.ic.ufal.logic.parser.strategy;
+import br.ic.ufal.logic.parser.ParserException;
 import br.ic.ufal.logic.token.Token;
 /**
- * Created by Victor C. on 02/05/16.
+ * Created by Victor C. on 20/04/16.
  */
-// Token.CLOSE_PARENTHESIS
-public class CloseParenthesisParsingStrategy extends ParsingStrategy{
+// Token.PROPOSITION
+public class PropositionParsingStrategy extends ParsingStrategy {
     @Override
     public void evaluate(int tokenTwoType) throws ParserException {
         if ((tokenTwoType == Token.PROPOSITION)
