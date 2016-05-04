@@ -10,6 +10,8 @@ import java.util.Stack;
 
 import br.ic.ufal.logic.token.Token;
 import br.ic.ufal.logic.parser.strategy.*;
+import br.ic.ufal.logic.token.visitor.PrecedenceVisitor;
+import br.ic.ufal.logic.token.visitor.TokenVisitor;
 
 /**
  * 
@@ -66,7 +68,9 @@ public class Parser {
 	private void computePostfixStream() throws ParserException {
 		final Stack<Token> stack = new Stack<Token>();
 		final ListIterator<Token> iterator = tokenStream.listIterator(0);
-		Token token, stackTop = null;
+		Token token;
+		Token stackTop = null;
+		TokenVisitor precedenceVstr = new PrecedenceVisitor();
 
 		while (iterator.hasNext()) {
 			do {
@@ -98,15 +102,14 @@ public class Parser {
 					}
 				} else if (stack.empty()) {
 					stack.push(token);
-				} else if ((tokenType == Token.UNARY_OPERATOR)
-						&& (stackTop.getPrecedence() <= token.getPrecedence())) {
+				} else if ((tokenType == Token.UNARY_OPERATOR) && (stackTop.acceptPrecedence(precedenceVstr) <= token.acceptPrecedence(precedenceVstr))) {
 					stack.push(token);
-				} else if (stackTop.getPrecedence() < token.getPrecedence()) {
+				} else if (stackTop.acceptPrecedence(precedenceVstr) < token.acceptPrecedence(precedenceVstr)) {
 					stack.push(token);
 				} else if (stackTop.isConditional() && token.isConditional()) {
 					stack.push(token);
 				} else {
-					while ((!stack.empty()) && (stackTop.getPrecedence() >= token.getPrecedence())) {
+					while ((!stack.empty()) && (stackTop.acceptPrecedence(precedenceVstr) >= token.acceptPrecedence(precedenceVstr))) {
 						postfixStream.add(stack.pop());
 						if (!stack.isEmpty()) {
 							stackTop = stack.peek();

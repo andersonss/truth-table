@@ -1,6 +1,8 @@
 package br.ic.ufal.logic.token;
 
 import br.ic.ufal.logic.evaluator.UnaryEvaluator;
+import br.ic.ufal.logic.token.visitor.TokenVisitable;
+import br.ic.ufal.logic.token.visitor.TokenVisitor;
 
 /**
  * Negation: "~", "!".
@@ -8,7 +10,7 @@ import br.ic.ufal.logic.evaluator.UnaryEvaluator;
  * @author Anderson Santos
  * 
  */
-public class NegationToken extends Token implements UnaryEvaluator {
+public class NegationToken extends Token implements UnaryEvaluator, TokenVisitable{
 
 	/**
 	 * @param symbol
@@ -19,16 +21,6 @@ public class NegationToken extends Token implements UnaryEvaluator {
 		this.symbol = symbol;
 		this.position = position;
 		offset = (symbol.length() - 1) / 2;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.ic.ufal.logic.token.Token#getPrecedence()
-	 */
-	@Override
-	public int getPrecedence() {
-		return 6;
 	}
 
 	/*
@@ -50,5 +42,10 @@ public class NegationToken extends Token implements UnaryEvaluator {
 					position + offset);
 		}
 		return returnToken;
+	}
+
+	@Override
+	public int acceptPrecedence(TokenVisitor visitor) {
+		return visitor.getPrecedence(this);
 	}
 }

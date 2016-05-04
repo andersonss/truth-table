@@ -1,12 +1,15 @@
 package br.ic.ufal.logic.token;
 
+import br.ic.ufal.logic.token.visitor.TokenVisitable;
+import br.ic.ufal.logic.token.visitor.TokenVisitor;
+
 /**
  * Close parenthesis: ")".
  * 
  * @author anderson
  * 
  */
-public class CloseParenthesisToken extends Token {
+public class CloseParenthesisToken extends Token implements TokenVisitable {
 
 	public CloseParenthesisToken(final String symbol, final int position) {
 		type = CLOSE_PARENTHESIS;
@@ -16,7 +19,7 @@ public class CloseParenthesisToken extends Token {
 	}
 
 	@Override
-	public int getPrecedence() {
-		return 0;
+	public int acceptPrecedence(TokenVisitor visitor) {
+		return visitor.getPrecedence(this);
 	}
 }

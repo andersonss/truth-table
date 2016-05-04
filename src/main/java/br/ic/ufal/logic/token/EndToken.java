@@ -1,12 +1,15 @@
 package br.ic.ufal.logic.token;
 
+import br.ic.ufal.logic.token.visitor.TokenVisitable;
+import br.ic.ufal.logic.token.visitor.TokenVisitor;
+
 /**
  * End: "$".
  * 
  * @author Anderson Santos
  * 
  */
-public class EndToken extends Token {
+public class EndToken extends Token implements TokenVisitable{
 
 	/**
 	 * @param symbol
@@ -17,13 +20,8 @@ public class EndToken extends Token {
 		offset = (symbol.length() - 1) / 2;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.ic.ufal.logic.token.Token#getPrecedence()
-	 */
 	@Override
-	public int getPrecedence() {
-		return 0;
+	public int acceptPrecedence(TokenVisitor visitor) {
+		return visitor.getPrecedence(this);
 	}
 }

@@ -1,6 +1,8 @@
 package br.ic.ufal.logic.token;
 
 import br.ic.ufal.logic.evaluator.BinaryEvaluator;
+import br.ic.ufal.logic.token.visitor.TokenVisitable;
+import br.ic.ufal.logic.token.visitor.TokenVisitor;
 
 /**
  * Conditional: "=>", "->".
@@ -8,7 +10,7 @@ import br.ic.ufal.logic.evaluator.BinaryEvaluator;
  * @author Anderson Santos
  * 
  */
-public class ConditionalToken extends Token implements BinaryEvaluator {
+public class ConditionalToken extends Token implements BinaryEvaluator, TokenVisitable {
 
 	/**
 	 * @param symbol
@@ -21,17 +23,6 @@ public class ConditionalToken extends Token implements BinaryEvaluator {
 		this.isConditional = true;
 		offset = (symbol.length() - 1) / 2;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.ic.ufal.logic.token.Token#getPrecedence()
-	 */
-	@Override
-	public int getPrecedence() {
-		return 3;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -51,5 +42,10 @@ public class ConditionalToken extends Token implements BinaryEvaluator {
 					position + offset);
 		}
 		return returnToken;
+	}
+
+	@Override
+	public int acceptPrecedence(TokenVisitor visitor) {
+		return visitor.getPrecedence(this);
 	}
 }

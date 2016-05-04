@@ -1,6 +1,8 @@
 package br.ic.ufal.logic.token;
 
 import br.ic.ufal.logic.evaluator.BinaryEvaluator;
+import br.ic.ufal.logic.token.visitor.TokenVisitable;
+import br.ic.ufal.logic.token.visitor.TokenVisitor;
 
 /**
  * Inclusive disjunction: "v".
@@ -8,7 +10,7 @@ import br.ic.ufal.logic.evaluator.BinaryEvaluator;
  * @author Anderson Santos
  * 
  */
-public class InclusiveDisjunctionToken extends Token implements BinaryEvaluator {
+public class InclusiveDisjunctionToken extends Token implements BinaryEvaluator, TokenVisitable {
 
 	/**
 	 * @param symbol
@@ -19,16 +21,6 @@ public class InclusiveDisjunctionToken extends Token implements BinaryEvaluator 
 		this.symbol = symbol;
 		this.position = position;
 		offset = (symbol.length() - 1) / 2;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.ic.ufal.logic.token.Token#getPrecedence()
-	 */
-	@Override
-	public int getPrecedence() {
-		return 4;
 	}
 
 	/*
@@ -50,5 +42,10 @@ public class InclusiveDisjunctionToken extends Token implements BinaryEvaluator 
 					position + offset);
 		}
 		return returnToken;
+	}
+
+	@Override
+	public int acceptPrecedence(TokenVisitor visitor) {
+		return visitor.getPrecedence(this);
 	}
 }

@@ -1,5 +1,7 @@
 package br.ic.ufal.logic.token;
 
+import br.ic.ufal.logic.token.visitor.TokenVisitor;
+
 /**
  * 
  * 
@@ -20,8 +22,6 @@ public abstract class Token {
 	protected int position = 0, offset = 0, type;
 	protected String symbol;
 	protected boolean isConditional = false;
-
-	public abstract int getPrecedence();
 
 	public int getPosition() {
 		return position;
@@ -66,4 +66,6 @@ public abstract class Token {
 	public boolean isConditional() {
 		return isConditional;
 	}
+
+	public abstract int acceptPrecedence(TokenVisitor visitor);
 }
