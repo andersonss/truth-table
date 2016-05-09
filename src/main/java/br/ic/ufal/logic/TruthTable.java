@@ -365,8 +365,8 @@ public class TruthTable {
 				final ValueToken stackPopped2 = (ValueToken) stack.pop(), stackPopped1 = (ValueToken) stack
 						.pop();
 				final BinaryEvaluator binaryEvaluator = (BinaryEvaluator) token;
-				final ValueToken valueToken = binaryEvaluator.evaluate(
-						stackPopped1, stackPopped2);
+				//Evaluating token (Binary)
+				final ValueToken valueToken = binaryEvaluator.evaluate(stackPopped1, stackPopped2);
 				if (iterator.hasNext()) {
 					stack.push(valueToken);
 				}
@@ -380,8 +380,8 @@ public class TruthTable {
 			} else if (tokenType == Token.UNARY_OPERATOR) {
 				final ValueToken stackPopped = (ValueToken) stack.pop();
 				final UnaryEvaluator unaryEvaluator = (UnaryEvaluator) token;
-				final ValueToken valueToken = unaryEvaluator
-						.evaluate(stackPopped);
+				//Evaluating token (Unary)
+				final ValueToken valueToken = unaryEvaluator.evaluate(stackPopped);
 				if (iterator.hasNext()) {
 					stack.push(valueToken);
 				}

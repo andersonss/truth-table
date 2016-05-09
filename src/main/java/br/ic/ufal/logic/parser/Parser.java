@@ -56,6 +56,7 @@ public class Parser {
 					token2Type = token2.getType();
 				}
 			}
+			// Using Strategy + Factory to evaluate token type
 			ParsingStrategyFactory.forToken(token1).evaluate(token2Type);
 			token1 = token2;
 		}
