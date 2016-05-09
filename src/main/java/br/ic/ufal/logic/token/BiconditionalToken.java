@@ -31,16 +31,14 @@ public class BiconditionalToken extends Token implements BinaryEvaluator, TokenV
 	 */
 	@Override
 	public ValueToken evaluate(final ValueToken token1, final ValueToken token2) {
-		ValueToken returnToken = null;
-		if (token1.getValue() == token2.getValue()) {
-			returnToken = new ValueToken(true, token1.getDisplayMethod(),
-					position + offset);
-		} else {
-			returnToken = new ValueToken(false, token1.getDisplayMethod(),
-					position + offset);
-		}
-		return returnToken;
+		return evaluateToken(token1, token2);
 	}
+	
+	@Override
+	public boolean logicalOperation(ValueToken token1, ValueToken token2) {
+		return token1.getValue() == token2.getValue();
+	}
+	
 	@Override
 	public int acceptPrecedence(TokenVisitor visitor) {
 		return visitor.getPrecedence(this);

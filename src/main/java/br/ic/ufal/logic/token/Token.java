@@ -66,6 +66,16 @@ public abstract class Token {
 	public boolean isConditional() {
 		return isConditional;
 	}
+	
+	public ValueToken evaluateToken(final ValueToken token1, final ValueToken token2){
+		ValueToken returnToken = null;
+		returnToken = new ValueToken(logicalOperation(token1, token2), token1.getDisplayMethod(), position + offset);
+		return returnToken;
+	};
+	
+	public boolean logicalOperation(ValueToken token1, ValueToken token2) {
+		return true;
+	};
 
 	public abstract int acceptPrecedence(TokenVisitor visitor);
 }

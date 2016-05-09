@@ -1,5 +1,4 @@
 package br.ic.ufal.logic.token;
-
 import br.ic.ufal.logic.evaluator.UnaryEvaluator;
 import br.ic.ufal.logic.token.visitor.TokenVisitable;
 import br.ic.ufal.logic.token.visitor.TokenVisitor;
@@ -32,16 +31,12 @@ public class NegationToken extends Token implements UnaryEvaluator, TokenVisitab
 	 */
 	@Override
 	public ValueToken evaluate(final ValueToken token) {
-		// TODO Define rule using inabit
-		ValueToken returnToken = null;
-		if (token.getValue() == false) {
-			returnToken = new ValueToken(true, token.getDisplayMethod(),
-					position + offset);
-		} else {
-			returnToken = new ValueToken(false, token.getDisplayMethod(),
-					position + offset);
-		}
-		return returnToken;
+		return evaluateToken(token, null);
+	}
+	
+	@Override
+	public boolean logicalOperation(ValueToken token1, ValueToken token2) {
+		return !token1.getValue();
 	}
 
 	@Override
