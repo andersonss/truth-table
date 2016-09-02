@@ -50,19 +50,19 @@ public class Scanner {
 
 	private LinkedList<Token> tokenStream;
 	private int i, positionOfFirstBadChar;
-	private final String statement, inclusive_disjunction = symbolTable
-			.get("inclusive_disjunction"), open_parenthesis = symbolTable
-			.get("open_parenthesis"), close_parenthesis = symbolTable
-			.get("close_parenthesis"),
-			negation1 = symbolTable.get("negation1"), negation2 = symbolTable
-					.get("negation2"), conjunction1 = symbolTable
-					.get("conjunction1"), conjunction2 = symbolTable
-					.get("conjunction2"), exclusive_disjunction = symbolTable
-					.get("exclusive_disjunction"), conditional1 = symbolTable
-					.get("conditional1"), conditional2 = symbolTable
-					.get("conditional2"), biconditional1 = symbolTable
-					.get("biconditional1"), biconditional2 = symbolTable
-					.get("biconditional2"), space = symbolTable.get("space"),
+	private final String statement, inclusive_disjunction = symbolTable.get("inclusive_disjunction"),
+			open_parenthesis = symbolTable.get("open_parenthesis"),
+			close_parenthesis = symbolTable.get("close_parenthesis"),
+			negation1 = symbolTable.get("negation1"),
+			negation2 = symbolTable.get("negation2"),
+			conjunction1 = symbolTable.get("conjunction1"),
+			conjunction2 = symbolTable.get("conjunction2"),
+			exclusive_disjunction = symbolTable.get("exclusive_disjunction"),
+			conditional1 = symbolTable.get("conditional1"),
+			conditional2 = symbolTable.get("conditional2"),
+			biconditional1 = symbolTable.get("biconditional1"),
+			biconditional2 = symbolTable.get("biconditional2"),
+			space = symbolTable.get("space"),
 			constant_true = symbolTable.get("constant_true"),
 			constant_false = symbolTable.get("constant_false");
 
@@ -98,70 +98,48 @@ public class Scanner {
 			 * token objects
 			 */
 			if (c == inclusive_disjunction.charAt(0)) {
-				positionOfFirstBadChar = reportError(positionOfFirstBadChar,
-						i - 1);
-				tokenStream.add(new InclusiveDisjunctionToken(
-						inclusive_disjunction, i));
+				positionOfFirstBadChar = reportError(positionOfFirstBadChar, i - 1);
+				tokenStream.add(new InclusiveDisjunctionToken(inclusive_disjunction, i));
 			} else if (c == open_parenthesis.charAt(0)) {
-				positionOfFirstBadChar = reportError(positionOfFirstBadChar,
-						i - 1);
-				tokenStream.add(new OpenParenthesisToken(open_parenthesis, i));
+                positionOfFirstBadChar = reportError(positionOfFirstBadChar, i - 1);
+                tokenStream.add(new OpenParenthesisToken(open_parenthesis, i));
 			} else if (c == close_parenthesis.charAt(0)) {
-				positionOfFirstBadChar = reportError(positionOfFirstBadChar,
-						i - 1);
-				tokenStream
-						.add(new CloseParenthesisToken(close_parenthesis, i));
+				positionOfFirstBadChar = reportError(positionOfFirstBadChar, i - 1);
+				tokenStream.add(new CloseParenthesisToken(close_parenthesis, i));
 			} else if ((c == negation1.charAt(0)) || (c == negation2.charAt(0))) {
-				positionOfFirstBadChar = reportError(positionOfFirstBadChar,
-						i - 1);
+				positionOfFirstBadChar = reportError(positionOfFirstBadChar, i - 1);
 				tokenStream.add(new NegationToken(String.valueOf(c), i));
-			} else if ((c == conjunction1.charAt(0))
-					|| (c == conjunction2.charAt(0))) {
-				positionOfFirstBadChar = reportError(positionOfFirstBadChar,
-						i - 1);
+			} else if ((c == conjunction1.charAt(0)) || (c == conjunction2.charAt(0))) {
+				positionOfFirstBadChar = reportError(positionOfFirstBadChar, i - 1);
 				tokenStream.add(new ConjunctionToken(String.valueOf(c), i));
 			} else if (c == exclusive_disjunction.charAt(0)) {
-				positionOfFirstBadChar = reportError(positionOfFirstBadChar,
-						i - 1);
-				tokenStream.add(new ExclusiveDisjunctionToken(
-						exclusive_disjunction, i));
+				positionOfFirstBadChar = reportError(positionOfFirstBadChar, i - 1);
+				tokenStream.add(new ExclusiveDisjunctionToken(exclusive_disjunction, i));
 			} else if (c == constant_false.charAt(0)) {
-				positionOfFirstBadChar = reportError(positionOfFirstBadChar,
-						i - 1);
+				positionOfFirstBadChar = reportError(positionOfFirstBadChar, i - 1);
 				tokenStream.add(new ConstantToken(constant_false, i, false));
 			} else if (c == constant_true.charAt(0)) {
-				positionOfFirstBadChar = reportError(positionOfFirstBadChar,
-						i - 1);
+				positionOfFirstBadChar = reportError(positionOfFirstBadChar, i - 1);
 				tokenStream.add(new ConstantToken(constant_true, i, true));
 			} else if (c == conditional1.charAt(0)) {
-				positionOfFirstBadChar = reportError(positionOfFirstBadChar,
-						i - 1);
-				scanMultiCharSymbol(conditional1, new ConditionalToken(
-						conditional1, i), true);
+				positionOfFirstBadChar = reportError(positionOfFirstBadChar, i - 1);
+				scanMultiCharSymbol(conditional1, new ConditionalToken(conditional1, i), true);
 			} else if (c == conditional2.charAt(0)) {
-				positionOfFirstBadChar = reportError(positionOfFirstBadChar,
-						i - 1);
-				scanMultiCharSymbol(conditional2, new ConditionalToken(
-						conditional2, i), true);
+				positionOfFirstBadChar = reportError(positionOfFirstBadChar, i - 1);
+				scanMultiCharSymbol(conditional2, new ConditionalToken(conditional2, i), true);
 			} else if (c == biconditional1.charAt(0)) {
-				positionOfFirstBadChar = reportError(positionOfFirstBadChar,
-						i - 1);
+				positionOfFirstBadChar = reportError(positionOfFirstBadChar, i - 1);
 				final int current = i;
-				final boolean isOK = scanMultiCharSymbol(biconditional1,
-						new BiconditionalToken(biconditional1, i), false);
+				final boolean isOK = scanMultiCharSymbol(biconditional1, new BiconditionalToken(biconditional1, i), false);
 				if (!isOK) {
 					i = current;
-					scanMultiCharSymbol(biconditional2, new BiconditionalToken(
-							biconditional2, i), true);
+					scanMultiCharSymbol(biconditional2, new BiconditionalToken(biconditional2, i), true);
 				}
 			} else if (((c >= 'A') && (c <= 'Z')) || ((c >= 'a') && (c <= 'z'))) {
-				positionOfFirstBadChar = reportError(positionOfFirstBadChar,
-						i - 1);
-				tokenStream.add(new PropositionToken(String.valueOf(Character
-						.toUpperCase(c)), i));
+				positionOfFirstBadChar = reportError(positionOfFirstBadChar, i - 1);
+				tokenStream.add(new PropositionToken(String.valueOf(Character.toUpperCase(c)), i));
 			} else if (c == space.charAt(0)) {
-				positionOfFirstBadChar = reportError(positionOfFirstBadChar,
-						i - 1);
+				positionOfFirstBadChar = reportError(positionOfFirstBadChar, i - 1);
 			} else if (positionOfFirstBadChar == -1) {
 				positionOfFirstBadChar = i;
 			}
@@ -187,44 +165,35 @@ public class Scanner {
 		}
 		while (iterator.hasNext()) {
 			token2 = iterator.next();
-			final int token1Type = token1.getType(), token2Type = token2
-					.getType();
+			final int token1Type = token1.getType(), token2Type = token2.getType();
 			token1.setPosition(position);
 			reformattedtokenStream.add(token1);
 			position = position + token1.getSymbol().length();
 			if (token1Type == Token.START) {
 				if (token2Type == Token.BINARY_OPERATOR) {
-					final SpaceToken spaceToken = new SpaceToken(
-							symbolTable.get("space"), position);
+					final SpaceToken spaceToken = new SpaceToken(symbolTable.get("space"), position);
 					reformattedtokenStream.add(spaceToken);
 					position = position + spaceToken.getSymbol().length();
 				}
 			} else if (token1Type == Token.BINARY_OPERATOR) {
-				final SpaceToken spaceToken = new SpaceToken(
-						symbolTable.get("space"), position);
+				final SpaceToken spaceToken = new SpaceToken(symbolTable.get("space"), position);
 				reformattedtokenStream.add(spaceToken);
 				position = position + spaceToken.getSymbol().length();
 			} else if (token1Type == Token.UNARY_OPERATOR) {
 				if (token2Type == Token.BINARY_OPERATOR) {
-					final SpaceToken spaceToken = new SpaceToken(
-							symbolTable.get("space"), position);
+					final SpaceToken spaceToken = new SpaceToken(symbolTable.get("space"), position);
 					reformattedtokenStream.add(spaceToken);
 					position = position + spaceToken.getSymbol().length();
 				}
-			} else if ((token1Type == Token.PROPOSITION)
-					|| (token1Type == Token.CONSTANT)
-					|| (token1Type == Token.CLOSE_PARENTHESIS)) {
-				if ((token2Type != Token.CLOSE_PARENTHESIS)
-						&& (token2Type != Token.END)) {
-					final SpaceToken spaceToken = new SpaceToken(
-							symbolTable.get("space"), position);
+			} else if ((token1Type == Token.PROPOSITION) || (token1Type == Token.CONSTANT) || (token1Type == Token.CLOSE_PARENTHESIS)) {
+				if ((token2Type != Token.CLOSE_PARENTHESIS) && (token2Type != Token.END)) {
+					final SpaceToken spaceToken = new SpaceToken(symbolTable.get("space"), position);
 					reformattedtokenStream.add(spaceToken);
 					position = position + spaceToken.getSymbol().length();
 				}
 			} else if (token1Type == Token.OPEN_PARENTHESIS) {
 				if (token2Type == Token.CLOSE_PARENTHESIS) {
-					final SpaceToken spaceToken = new SpaceToken(
-							symbolTable.get("space"), position);
+					final SpaceToken spaceToken = new SpaceToken(symbolTable.get("space"), position);
 					reformattedtokenStream.add(spaceToken);
 					position = position + spaceToken.getSymbol().length();
 				}

@@ -1,12 +1,15 @@
 package br.ic.ufal.logic.token;
 
+import br.ic.ufal.logic.token.visitor.TokenVisitable;
+import br.ic.ufal.logic.token.visitor.TokenVisitor;
+
 /**
  * Proposition: variables.
  * 
  * @author Anderson Santos
  * 
  */
-public class PropositionToken extends Token {
+public class PropositionToken extends Token implements TokenVisitable {
 
 	/**
 	 * @param symbol
@@ -19,13 +22,8 @@ public class PropositionToken extends Token {
 		offset = (symbol.length() - 1) / 2;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.ic.ufal.logic.token.Token#getPrecedence()
-	 */
 	@Override
-	public int getPrecedence() {
-		return 0;
+	public int acceptPrecedence(TokenVisitor visitor) {
+		return visitor.getPrecedence(this);
 	}
 }

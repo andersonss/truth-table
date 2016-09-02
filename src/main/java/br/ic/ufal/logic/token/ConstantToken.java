@@ -1,12 +1,15 @@
 package br.ic.ufal.logic.token;
 
+import br.ic.ufal.logic.token.visitor.TokenVisitable;
+import br.ic.ufal.logic.token.visitor.TokenVisitor;
+
 /**
  * Constant: "0" or "1".
  * 
  * @author Anderson Santos
  * 
  */
-public class ConstantToken extends Token {
+public class ConstantToken extends Token implements TokenVisitable {
 	private final boolean value;
 
 	/**
@@ -22,21 +25,15 @@ public class ConstantToken extends Token {
 		this.value = value;
 		offset = (symbol.length() - 1) / 2;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.ic.ufal.logic.token.Token#getPrecedence()
-	 */
-	@Override
-	public int getPrecedence() {
-		return 0;
-	}
-
 	/**
 	 * @return value
 	 */
 	public boolean getValue() {
 		return value;
+	}
+
+	@Override
+	public int acceptPrecedence(TokenVisitor visitor) {
+		return visitor.getPrecedence(this);
 	}
 }

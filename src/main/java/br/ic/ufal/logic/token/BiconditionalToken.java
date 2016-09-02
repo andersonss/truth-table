@@ -1,6 +1,7 @@
 package br.ic.ufal.logic.token;
-
 import br.ic.ufal.logic.evaluator.BinaryEvaluator;
+import br.ic.ufal.logic.token.visitor.TokenVisitable;
+import br.ic.ufal.logic.token.visitor.TokenVisitor;
 
 /**
  * Biconditional: "<=>", "<->".
@@ -8,7 +9,7 @@ import br.ic.ufal.logic.evaluator.BinaryEvaluator;
  * @author Anderson Santos
  * 
  */
-public class BiconditionalToken extends Token implements BinaryEvaluator {
+public class BiconditionalToken extends Token implements BinaryEvaluator, TokenVisitable {
 
 	/**
 	 * @param symbol
@@ -24,30 +25,22 @@ public class BiconditionalToken extends Token implements BinaryEvaluator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see br.ic.ufal.logic.token.Token#getPrecedence()
-	 */
-	@Override
-	public int getPrecedence() {
-		return 2;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * br.ic.ufal.logic.evaluator.BinaryEvaluator#evaluate(br.ic.ufal.logic.
 	 * token.ValueToken, br.ic.ufal.logic.token.ValueToken)
 	 */
 	@Override
 	public ValueToken evaluate(final ValueToken token1, final ValueToken token2) {
-		ValueToken returnToken = null;
-		if (token1.getValue() == token2.getValue()) {
-			returnToken = new ValueToken(true, token1.getDisplayMethod(),
-					position + offset);
-		} else {
-			returnToken = new ValueToken(false, token1.getDisplayMethod(),
-					position + offset);
-		}
-		return returnToken;
+		return evaluateToken(token1, token2);
+	}
+	
+	@Override
+	public boolean logicalOperation(ValueToken token1, ValueToken token2) {
+		return token1.getValue() == token2.getValue();
+	}
+	
+	@Override
+	public int acceptPrecedence(TokenVisitor visitor) {
+		return visitor.getPrecedence(this);
 	}
 }

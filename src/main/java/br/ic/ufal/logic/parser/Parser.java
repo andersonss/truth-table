@@ -9,6 +9,9 @@ import java.util.ListIterator;
 import java.util.Stack;
 
 import br.ic.ufal.logic.token.Token;
+import br.ic.ufal.logic.parser.strategy.*;
+import br.ic.ufal.logic.token.visitor.PrecedenceVisitor;
+import br.ic.ufal.logic.token.visitor.TokenVisitor;
 
 /**
  * 
@@ -53,85 +56,8 @@ public class Parser {
 					token2Type = token2.getType();
 				}
 			}
-			switch (token1Type) {
-			case Token.PROPOSITION:
-				if ((token2Type == Token.PROPOSITION)
-						|| (token2Type == Token.CONSTANT)
-						|| (token2Type == Token.UNARY_OPERATOR)
-						|| (token2Type == Token.OPEN_PARENTHESIS)) {
-					throw new ParserException(
-							ParserException.MISSING_CONNECTIVE,
-							token1.getPosition() + 2);
-				}
-				break;
-			case Token.CONSTANT:
-				if ((token2Type == Token.PROPOSITION)
-						|| (token2Type == Token.CONSTANT)
-						|| (token2Type == Token.UNARY_OPERATOR)
-						|| (token2Type == Token.OPEN_PARENTHESIS)) {
-					throw new ParserException(
-							ParserException.MISSING_CONNECTIVE,
-							token1.getPosition() + 2);
-				}
-				break;
-			case Token.UNARY_OPERATOR:
-				if ((token2Type == Token.CLOSE_PARENTHESIS)
-						|| (token2Type == Token.BINARY_OPERATOR)
-						|| (token2Type == Token.END)) {
-					throw new ParserException(
-							ParserException.MISSING_STATEMENT,
-							token1.getPosition() + 2);
-				}
-				break;
-			case Token.OPEN_PARENTHESIS:
-				if (token2Type == Token.CLOSE_PARENTHESIS) {
-					throw new ParserException(
-							ParserException.MISSING_STATEMENT_IN_PARENTHESES,
-							token1.getPosition() + 2);
-				} else if (token2Type == Token.BINARY_OPERATOR) {
-					throw new ParserException(
-							ParserException.MISSING_STATEMENT,
-							token1.getPosition() + 2);
-				} else if (token2Type == Token.END) {
-					throw new ParserException(
-							ParserException.ILLEGAL_USE_OF_PARENTHESES,
-							token1.getPosition() + 1);
-				}
-				break;
-			case Token.CLOSE_PARENTHESIS:
-				if ((token2Type == Token.PROPOSITION)
-						|| (token2Type == Token.CONSTANT)
-						|| (token2Type == Token.UNARY_OPERATOR)
-						|| (token2Type == Token.OPEN_PARENTHESIS)) {
-					throw new ParserException(
-							ParserException.MISSING_CONNECTIVE,
-							token1.getPosition() + 2);
-				}
-				break;
-			case Token.BINARY_OPERATOR:
-				if ((token2Type == Token.CLOSE_PARENTHESIS)
-						|| (token2Type == Token.BINARY_OPERATOR)
-						|| (token2Type == Token.END)) {
-					throw new ParserException(
-							ParserException.MISSING_STATEMENT,
-							token1.getPosition() + token1.getSymbol().length()
-									+ 1);
-				}
-				break;
-			case Token.START:
-				if (token2Type == Token.CLOSE_PARENTHESIS) {
-					throw new ParserException(
-							ParserException.ILLEGAL_USE_OF_PARENTHESES,
-							token1.getPosition() + 2);
-				} else if (token2Type == Token.BINARY_OPERATOR) {
-					throw new ParserException(
-							ParserException.MISSING_STATEMENT,
-							token1.getPosition() + 2);
-				}
-				break;
-			default:
-				break;
-			}
+			// Using Strategy + Factory to evaluate token type
+			ParsingStrategyFactory.forToken(token1).evaluate(token2Type);
 			token1 = token2;
 		}
 		computePostfixStream();
@@ -143,7 +69,9 @@ public class Parser {
 	private void computePostfixStream() throws ParserException {
 		final Stack<Token> stack = new Stack<Token>();
 		final ListIterator<Token> iterator = tokenStream.listIterator(0);
-		Token token, stackTop = null;
+		Token token;
+		Token stackTop = null;
+		TokenVisitor precedenceVstr = new PrecedenceVisitor();
 
 		while (iterator.hasNext()) {
 			do {
@@ -175,17 +103,14 @@ public class Parser {
 					}
 				} else if (stack.empty()) {
 					stack.push(token);
-				} else if ((tokenType == Token.UNARY_OPERATOR)
-						&& (stackTop.getPrecedence() <= token.getPrecedence())) {
+				} else if ((tokenType == Token.UNARY_OPERATOR) && (stackTop.acceptPrecedence(precedenceVstr) <= token.acceptPrecedence(precedenceVstr))) {
 					stack.push(token);
-				} else if (stackTop.getPrecedence() < token.getPrecedence()) {
+				} else if (stackTop.acceptPrecedence(precedenceVstr) < token.acceptPrecedence(precedenceVstr)) {
 					stack.push(token);
 				} else if (stackTop.isConditional() && token.isConditional()) {
 					stack.push(token);
 				} else {
-					while ((!stack.empty())
-							&& (stackTop.getPrecedence() >= token
-									.getPrecedence())) {
+					while ((!stack.empty()) && (stackTop.acceptPrecedence(precedenceVstr) >= token.acceptPrecedence(precedenceVstr))) {
 						postfixStream.add(stack.pop());
 						if (!stack.isEmpty()) {
 							stackTop = stack.peek();

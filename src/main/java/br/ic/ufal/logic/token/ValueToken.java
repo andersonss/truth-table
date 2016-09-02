@@ -1,6 +1,8 @@
 package br.ic.ufal.logic.token;
 
 import br.ic.ufal.logic.TruthValue;
+import br.ic.ufal.logic.token.visitor.TokenVisitable;
+import br.ic.ufal.logic.token.visitor.TokenVisitor;
 
 /**
  * 
@@ -8,7 +10,7 @@ import br.ic.ufal.logic.TruthValue;
  * @author Anderson Santos
  * 
  */
-public class ValueToken extends Token {
+public class ValueToken extends Token implements TokenVisitable{
 	private final boolean value;
 	private final int displayMethod;
 
@@ -35,16 +37,6 @@ public class ValueToken extends Token {
 		this.position = position;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.ic.ufal.logic.token.Token#getPrecedence()
-	 */
-	@Override
-	public int getPrecedence() {
-		return 0;
-	}
-
 	/**
 	 * @return value
 	 */
@@ -57,5 +49,10 @@ public class ValueToken extends Token {
 	 */
 	public int getDisplayMethod() {
 		return displayMethod;
+	}
+
+	@Override
+	public int acceptPrecedence(TokenVisitor visitor) {
+		return visitor.getPrecedence(this);
 	}
 }
